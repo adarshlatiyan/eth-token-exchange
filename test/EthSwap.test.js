@@ -57,6 +57,13 @@ contract("EthSwap", ([deployer, investor]) => {
             // EthSwap should get 1 ethereum
             ethSwapBal = await web3.eth.getBalance(ethSwap.address)
             assert.equal(ethSwapBal, web3.utils.toWei('1', 'Ether'))
+
+            // Test if correct event is emitted
+            const event = result.logs[0].args
+            assert.equal(event.account, investor)
+            assert.equal(event.token, token.address)
+            assert.equal(event.amount, tokens('100').toString())
+            assert.equal(event.rate, (await ethSwap.rate()).toString())
         });
     })
 })
